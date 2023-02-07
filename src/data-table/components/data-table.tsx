@@ -2,9 +2,9 @@ import { Table } from 'antd';
 import { TableProps } from 'antd/es/table';
 import React, { forwardRef, useImperativeHandle } from 'react';
 import ReactDragListView from 'react-drag-listview';
-import { FetchFunction, useFetchData, UseFetchDataResult } from '../../hooks/fetch-data-hook';
-import { DataTableColumn, useOnPageSearchColumn } from '../../hooks/on-page-search-column-hook';
-import { useRowSelection } from '../../hooks/row-selection-hook';
+import { FetchFunction, useFetchData, UseFetchDataResult } from '../hooks/fetch-data-hook';
+import { DataTableColumn, useOnPageSearchColumn } from '../hooks/on-page-search-column-hook';
+import { useRowSelection } from '../hooks/row-selection-hook';
 
 export type DataTableRefAttributes = Omit<UseFetchDataResult<any>, 'dataSource' | 'onChange'>
 

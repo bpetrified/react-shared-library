@@ -1,7 +1,7 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import { DataTable  } from '../data-table';
-import { DataTableColumn } from '../../../hooks/on-page-search-column-hook';
+import { DataTable  } from '../components/data-table';
+import { DataTableColumn } from '../hooks/on-page-search-column-hook';
 describe('DataTable Test', () => {
 
   beforeEach(() => {

@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react';
 import React, { useEffect, useState } from 'react';
-import { useRowSelection } from '../row-selection-hook';
+import { useRowSelection } from '../hooks/row-selection-hook';
 
 describe('Row Selecion Hook Test', () => {
   it('on row selection changed should set selected rows', () => {

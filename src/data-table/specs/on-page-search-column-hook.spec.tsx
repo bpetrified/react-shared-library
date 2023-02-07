@@ -1,7 +1,7 @@
 import { act, fireEvent, getByTestId, render, waitFor } from '@testing-library/react';
 import React, { useEffect, useState } from 'react';
-import { useOnPageSearchColumn } from '../on-page-search-column-hook';
-import { useRowSelection } from '../row-selection-hook';
+import { useOnPageSearchColumn } from '../hooks/on-page-search-column-hook';
+import { useRowSelection } from '../hooks/row-selection-hook';
 
 describe('On Page Search Column Hook Test', () => {
   it('on search click should execute confirm()', async () => {

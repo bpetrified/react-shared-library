@@ -1,1 +1,2 @@
-export { DataTable } from './components/data-table/data-table';
+export * from './data-table';
+export * from './react-msal';
