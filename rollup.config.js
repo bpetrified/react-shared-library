@@ -5,6 +5,7 @@ import { terser } from "rollup-plugin-terser";
 import peerDepsExternal from 'rollup-plugin-peer-deps-external';
 import replace from "@rollup/plugin-replace";
 import generatePackageJson from "rollup-plugin-generate-package-json";
+import dts from "rollup-plugin-dts";
 
 const packageJson = require("./package.json");
 const fs = require('fs');
@@ -41,14 +42,12 @@ const subfolderPlugins = (folderName) => {
     generatePackageJson({
       baseContents: {
         name: `${packageJson.name}/${folderName}`,
-        private: true,
         main: "../cjs/index.js", // --> points to cjs format entry point of whole library
         module: "./index.js", // --> points to esm format entry point of individual component
         types: "./index.d.ts", // --> points to types definition file of individual component
       },
     }),
   ]
-  console.log('pp', subFilderPlugins);
   return subFilderPlugins;
 };
 
@@ -63,6 +62,14 @@ const folderBuilds = getFolders('./src').map((folder) => {
     },
     plugins: subfolderPlugins(folder),
     external: ['react', 'react-dom'],
+  };
+});
+
+const folderDSTBuilds = getFolders('./src').map((folder) => {
+  return {
+    input: `dist/${folder}/index.d.ts`,
+    output: [{ file: `dist/${folder}/index.d.ts`, format: "esm" }],
+    plugins: [dts.default()],
   };
 });
 
@@ -87,4 +94,10 @@ export default [
     external: ["react", "react-dom"],
   },
   ...folderBuilds,
+  {
+    input: "dist/index.d.ts",
+    output: [{ file: "dist/index.d.ts", format: "esm" }],
+    plugins: [dts.default()],
+  },
+  ...folderDSTBuilds
 ];
