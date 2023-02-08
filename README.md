@@ -1,5 +1,7 @@
+This project is published to public NPM to allow installation from public npm registry. 
+
 ---
-description: A React library including useful components/modules
+npm install techx-react-shared-library@latest
 ---
 
 # What are in this library ?
