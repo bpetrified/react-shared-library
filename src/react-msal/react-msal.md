@@ -1,6 +1,5 @@
----
-description: A React MSAL library built on top of the one provided by Microsoft.
----
+A React MSAL library built on top of the one provided by Microsoft.
+
 Please ensure you have basic understanding of the original library here - https://github.com/AzureAD/microsoft-authentication-library-for-js/tree/dev/lib/msal-react before start using this one.
 
 # Features
@@ -12,7 +11,7 @@ Please ensure you have basic understanding of the original library here - https:
 1. Initialise with MSAL config and login scopes
 ```js
 // MSAL imports
-import { ReactMsal } from '@techx-lab5/frontend.react-msal';
+import { ReactMsal } from 'techx-react-shared-library';
 
 const msalConfig = {
     auth: {
@@ -58,7 +57,7 @@ root.render(
 ### "useUserInGroups" hook
 Use this hook to check if user is authorised (include in AD usergroups)
 ```js
-import { useUserInGroups } from '@techx-lab5/frontend.react-msal';
+import { useUserInGroups } from 'techx-react-shared-library';
 
 const MyComponent = () => {
   const { isAuthorised } = useUserInGroups(['239fa1e2-ce18-4503-9193-c9d2ed4f2871'], 
@@ -131,7 +130,7 @@ export default App;
 Any descendant component of "WaitForAuthentication" can use this hook to access data from "loaderAfterAuthentication" prop. 
 
 ```js
-import { useUserInGroups } from '@techx-lab5/frontend.react-msal';
+import { useUserInGroups } from 'techx-react-shared-library';
 
 const MyComponent = () => {
   const { data } = useDataAfterAuthentication();
@@ -145,6 +144,6 @@ const MyComponent = () => {
 ### Original React MSAL 
 You can import any components/hooks provided by original "@azure/msal-browser" or "@azure/msal-react". Please check https://github.com/AzureAD/microsoft-authentication-library-for-js/tree/dev/lib/msal-react
 ```js
-import { useMsal } from '@techx-lab5/frontend.react-msal';
+import { useMsal } from 'techx-react-shared-library';
 ```
 
