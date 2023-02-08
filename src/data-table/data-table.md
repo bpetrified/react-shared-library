@@ -2,7 +2,7 @@
 description: A DataTable component.
 ---
 
-import { DataTable } from './data-table';
+import { DataTable } from 'techx-react-shared-library';
 
 A component that uses Ant Design "Table" with features: 
   - Drag and drop columns
