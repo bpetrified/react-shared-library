@@ -1,9 +1,8 @@
-import { act, fireEvent, getByTestId, render, waitFor } from '@testing-library/react';
-import React, { useEffect, useState } from 'react';
-import { useOnPageSearchColumn } from '../hooks/on-page-search-column-hook';
-import { useRowSelection } from '../hooks/row-selection-hook';
+import { act, fireEvent, render } from '@testing-library/react';
+import React, { useEffect } from 'react';
+import { useCustomColumn } from '../hooks/custom-column-hook';
 
-describe('On Page Search Column Hook Test', () => {
+describe('On Custom Column Hook Test', () => {
   it('on search click should execute confirm()', async () => {
     const sampleColumns = [
       {
@@ -24,7 +23,7 @@ describe('On Page Search Column Hook Test', () => {
       close: jest.fn()
     }
     const TestComponent = () => {
-      const { columns } = useOnPageSearchColumn<any>(sampleColumns);
+      const { columns } = useCustomColumn<any>(sampleColumns);
       return <>
       {columns[1].filterDropdown ? (columns[1] as any).filterDropdown(args) : null}
       </>
@@ -56,7 +55,7 @@ describe('On Page Search Column Hook Test', () => {
       close: jest.fn()
     }
     const TestComponent = () => {
-      const { columns } = useOnPageSearchColumn(sampleColumns);
+      const { columns } = useCustomColumn(sampleColumns);
       return <>
       {columns[1].filterDropdown ? (columns[1] as any).filterDropdown(args) : null}
       </>
@@ -82,7 +81,7 @@ describe('On Page Search Column Hook Test', () => {
     ];
     
     const TestComponent = () => {
-      const { columns } = useOnPageSearchColumn(sampleColumns);
+      const { columns } = useCustomColumn(sampleColumns);
       return <>
       {columns[1].onFilter ? <span>{
         columns[1].onFilter('a', { name: 'ab'}) ? 'true' : 'false'
@@ -118,7 +117,7 @@ describe('On Page Search Column Hook Test', () => {
     }
 
     const TestComponent = () => {
-      const { columns } = useOnPageSearchColumn(sampleColumns);
+      const { columns } = useCustomColumn(sampleColumns);
       useEffect(() => {
         if(columns[1].onFilterDropdownOpenChange) {
           columns[1].onFilterDropdownOpenChange(true);
@@ -157,7 +156,7 @@ describe('On Page Search Column Hook Test', () => {
       close: jest.fn()
     }
     const TestComponent = () => {
-      const { columns } = useOnPageSearchColumn(sampleColumns);
+      const { columns } = useCustomColumn(sampleColumns);
       return <>
       {columns[1].filterDropdown ? (columns[1] as any).filterDropdown(args) : null}
       </>
@@ -190,7 +189,7 @@ describe('On Page Search Column Hook Test', () => {
       close: jest.fn()
     }
     const TestComponent = () => {
-      const { columns } = useOnPageSearchColumn(sampleColumns);
+      const { columns } = useCustomColumn(sampleColumns);
       return <>
       {columns[1].filterDropdown ? (columns[1] as any).filterDropdown(args) : null}
       </>
@@ -216,7 +215,7 @@ describe('On Page Search Column Hook Test', () => {
     ];
     
     const TestComponent = () => {
-      const { columns } = useOnPageSearchColumn(sampleColumns);
+      const { columns } = useCustomColumn(sampleColumns);
       return <>
       {columns[1].filterIcon ? (columns[1] as any).filterIcon(true) : null}
       </>

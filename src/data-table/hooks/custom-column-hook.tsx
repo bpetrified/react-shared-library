@@ -3,6 +3,7 @@ import { Button, Input, InputRef, Space } from 'antd';
 import { ColumnType } from 'antd/es/table';
 import { FilterConfirmProps } from "antd/es/table/interface";
 import React, { useEffect, useRef, useState } from "react";
+import { ResizeCallbackData } from "react-resizable";
 
 export interface DataTableColumn<T> extends ColumnType<T> {
   onPageSearchEnabled?: boolean
@@ -12,7 +13,7 @@ type SearchedColumns = {
   [key: string]: string
 }
 
-export function useOnPageSearchColumn<T>(originalColumns: ColumnType<T>[]) {
+export function useCustomColumn<T>(originalColumns: ColumnType<T>[]) {
   const [columns, setColumn] = useState<DataTableColumn<T>[]>(originalColumns || []);
   const [searchText, setSearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
@@ -107,16 +108,36 @@ export function useOnPageSearchColumn<T>(originalColumns: ColumnType<T>[]) {
     }
   });
 
+  const handleResize =
+    (index: number) => (_: React.SyntheticEvent<Element>, { size }: ResizeCallbackData) => {
+      const newColumns = [...columns];
+      newColumns[index] = {
+        ...newColumns[index],
+        width: size.width,
+      };
+      setColumn(newColumns);
+    };
+
   /** Add enhance property for searchable column... */
   useEffect(() => {
-    setColumn(columns.map((col) => {
+    setColumn(columns.map((col: any) => {
       const onPageSearchProperty = col.onPageSearchEnabled ? getColumnSearchProps((col.dataIndex || '').toString()) : {};
       return {
+        ellipsis: true,
         ...col,
+        title: <span className="dragHandler">{col.title}</span>,
         ...onPageSearchProperty
       }
     }))
   }, []);
 
-  return { columns, setColumn }
+  const mergeColumns = columns.map((col: any, index: any) => ({
+    ...col,
+    onHeaderCell: (column: any) => ({
+      width: column.width,
+      onResize: handleResize(index) as React.ReactEventHandler<any>
+    }),
+  }));
+
+  return { columns: mergeColumns, setColumn }
 }

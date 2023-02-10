@@ -1,7 +1,7 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import { DataTable  } from '../components/data-table';
-import { DataTableColumn } from '../hooks/on-page-search-column-hook';
+import { DataTableColumn } from '../hooks/custom-column-hook';
 describe('DataTable Test', () => {
 
   beforeEach(() => {
@@ -83,10 +83,7 @@ describe('DataTable Test', () => {
         address: "Xi’An"
       }
     ];
-    const { getByText } = render(<DataTable antdTableProps={{
-      dataSource: sampleData,
-      columns: sampleColumns
-    }}/>);
+    const { getByText } = render(<DataTable dataSource={sampleData} columns={sampleColumns}/>);
     const rendered = getByText('Boran');
     expect(rendered).toBeTruthy();
   });

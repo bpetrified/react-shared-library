@@ -1,0 +1,39 @@
+.dataTable {
+  :global
+  .react-resizable {
+    position: relative;
+    background-clip: padding-box;
+  }
+
+  :global
+  .react-resizable-handle {
+    position: absolute;
+    right: -5px;
+    bottom: 0;
+    z-index: 1;
+    width: 30px;
+    height: 100%;
+    cursor: col-resize;
+  }
+
+  :global
+  .ant-table-column-sorter {
+    margin-right: 10px
+  }
+
+  :global
+  .ant-table-filter-column {
+    .ant-table-column-sorter {
+      margin-right: 0px
+    }
+  }
+
+  :global
+  .ant-table-filter-trigger {
+    margin-right: 5px
+  }
+}
+:global
+.dragHandler {
+  display: block;
+}

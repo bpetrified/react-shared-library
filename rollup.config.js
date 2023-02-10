@@ -6,6 +6,7 @@ import peerDepsExternal from 'rollup-plugin-peer-deps-external';
 import replace from "@rollup/plugin-replace";
 import generatePackageJson from "rollup-plugin-generate-package-json";
 import dts from "rollup-plugin-dts";
+import postcss from 'rollup-plugin-postcss';
 
 const packageJson = require("./package.json");
 const fs = require('fs');
@@ -27,6 +28,11 @@ const plugins = [
   commonjs(),
   typescript({ tsconfig: "./tsconfig.json" }),
   terser(),
+  postcss({
+    extract: false,
+    modules: true,
+    use: ['sass'],
+  })
 ];
 
 const subfolderPlugins = (folderName) => {
@@ -39,6 +45,11 @@ const subfolderPlugins = (folderName) => {
     commonjs(),
     typescript({ tsconfig: "./tsconfig.json", declaration: false }),
     terser(),
+    postcss({
+      extract: false,
+      modules: true,
+      use: ['sass'],
+    }),
     generatePackageJson({
       baseContents: {
         name: `${packageJson.name}/${folderName}`,

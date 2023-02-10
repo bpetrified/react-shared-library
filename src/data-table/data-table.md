@@ -9,7 +9,7 @@ import { DataTable } from 'techx-react-shared-library';
 ### Simple data table that can drag and drop column
 
 ```js live
-<DataTable antdTableProps={{ dataSource: [
+<DataTable dataSource={[
   {
     key: "1",
     name: "Boran",
@@ -38,7 +38,7 @@ import { DataTable } from 'techx-react-shared-library';
     title: "Gender",
     dataIndex: "gender"
   }
-] }}/>
+] }/>
 ```
 
 ### Table Ref
@@ -51,23 +51,20 @@ The Table "ref" can be read to obtain current sorters, paginations, loading stat
     }}>Refresh</Button>
     <DataTable
       ref={tableRef}
-      antdTableProps={{
-        columns: columns,
-        rowKey: (record) => record.id,
-        pagination: { showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`}
-      }}
+      columns={columns}
+      rowKey={(record) => record.id}
+      pagination={{ showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`}}
       fetchFunction={fetchProduct}
     />
   </>
   ```
 
 ### Pagination Configuration
-Pagination can be configured like original "Antd Table" by passing props https://ant.design/components/pagination/#api to antdTableProps.pagination. 
+Pagination can be configured like original "Antd Table" by passing props https://ant.design/components/pagination/#api. 
 
   ```js 
   <DataTable
-      antdTableProps={{
-        dataSource: [
+      dataSource={[
           {
             key: "1",
             name: "Boran",
@@ -86,10 +83,8 @@ Pagination can be configured like original "Antd Table" by passing props https:/
             title: "Gender",
             dataIndex: "gender"
           }
-        ],
-        // Your pagination config
-        pagination: { showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`}
-      }}
+        ]}
+      pagination={{ showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`}}
     />
   ```
 
