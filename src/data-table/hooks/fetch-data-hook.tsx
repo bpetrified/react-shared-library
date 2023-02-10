@@ -13,16 +13,18 @@ type TableParams = {
 
 export type UseFetchDataResult<T> = {
   dataSource?: T[];
-  loading: boolean; 
+  loading: boolean;
   onChange: (pagination: TablePaginationConfig, filters: Record<string, FilterValue | null>, sorter: SorterResult<T> | SorterResult<T>[]) => void;
   pagination: TablePaginationConfig;
   fetchData: () => Promise<void>;
   sorters: SorterResult<any>[];
+  isFetchError: boolean;
 }
 
-export function useFetchData<T>(fetchFunction: FetchFunction<T>) : UseFetchDataResult<T> {
+export function useFetchData<T>(fetchFunction: FetchFunction<T>): UseFetchDataResult<T> {
   const [data, setData] = useState<T[]>();
   const [loading, setLoading] = useState(false);
+  const [isFetchError, setIsFetchError] = useState(false);
   const [tableParams, setTableParams] = useState<TableParams>({
     pagination: {
       current: 1,
@@ -62,20 +64,25 @@ export function useFetchData<T>(fetchFunction: FetchFunction<T>) : UseFetchDataR
   };
 
   const fetchData = async () => {
-    if(!!!fetchFunction) 
+    if (!!!fetchFunction)
       return;
-    setLoading(true);
-    const fetchResult = await fetchFunction(tableParams.pagination, tableParams.sorters)
-    setData(fetchResult.data);
-    setLoading(false);
-    setTableParams({
-      ...tableParams,
-      pagination: {
-        current: fetchResult.pagination.current,
-        total: fetchResult.pagination.total,
-        pageSize: fetchResult.pagination.pageSize
-      },
-    });
+    try {
+      setLoading(true);
+      const fetchResult = await fetchFunction(tableParams.pagination, tableParams.sorters)
+      setIsFetchError(false);
+      setData(fetchResult.data);
+      setLoading(false);
+      setTableParams({
+        ...tableParams,
+        pagination: {
+          current: fetchResult.pagination.current,
+          total: fetchResult.pagination.total,
+          pageSize: fetchResult.pagination.pageSize
+        },
+      });
+    } catch (e) {
+      setIsFetchError(true);
+    }
   };
 
   useEffect(() => {
@@ -88,7 +95,7 @@ export function useFetchData<T>(fetchFunction: FetchFunction<T>) : UseFetchDataR
     }, sorters: tableParams.sorters
   })]);
 
-  return { dataSource: data, loading, onChange: handleTableChange, pagination: tableParams.pagination, fetchData,  sorters: tableParams.sorters }
+  return { dataSource: data, loading, onChange: handleTableChange, pagination: tableParams.pagination, fetchData, sorters: tableParams.sorters, isFetchError }
 }
 
 const isFiltersChanged = (currentFilters: any, newFilters: any) => {

@@ -26,7 +26,10 @@ const plugins = [
     __IS_DEV__: process.env.NODE_ENV === "development",
   }),
   commonjs(),
-  typescript({ tsconfig: "./tsconfig.json" }),
+  typescript({
+    tsconfig: "./tsconfig.json",
+    exclude: ["**/playground/**/*"]
+  }),
   terser(),
   postcss({
     extract: false,
@@ -43,7 +46,10 @@ const subfolderPlugins = (folderName) => {
       __IS_DEV__: process.env.NODE_ENV === "development",
     }),
     commonjs(),
-    typescript({ tsconfig: "./tsconfig.json", declaration: false }),
+    typescript({
+      tsconfig: "./tsconfig.json", declaration: false,
+      exclude: ["**/playground/**/*"]
+    }),
     terser(),
     postcss({
       extract: false,
