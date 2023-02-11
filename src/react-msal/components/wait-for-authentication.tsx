@@ -10,7 +10,7 @@ type WaitForAuthenticationPropType = {
   loadingComponent?: React.ReactElement;
   loaderAfterAuthentication?: (isAuthorised: boolean) => Promise<any>;
   errorComponent?: React.ReactElement;
-  onInteractionRequiredAuthError?: (e: any, _msalInstance: IPublicClientApplication) => {}
+  onInteractionRequiredAuthError?: (e: any, _msalInstance: IPublicClientApplication) => void;
 }
 
 export const WaitForAuthentication = ({ loadingComponent, children, loaderAfterAuthentication, errorComponent, onInteractionRequiredAuthError }: WaitForAuthenticationPropType) => {
@@ -40,6 +40,7 @@ export const WaitForAuthentication = ({ loadingComponent, children, loaderAfterA
           account: account as AccountInfo
         })
       }
+      WaitForAuthenticationHelper.authenticationCheckComplete();
       const data = await loaderAfterAuthentication?.(_isAuthenticated);
       setLoaderData(data);
     } catch (e) {
@@ -54,7 +55,6 @@ export const WaitForAuthentication = ({ loadingComponent, children, loaderAfterA
       setError(true);
       return;
     }
-    WaitForAuthenticationHelper.authenticationCheckComplete();
     setCompleted(true);
   };
   return <>
