@@ -13,6 +13,7 @@ module.exports = {
   },
   transformIgnorePatterns: ['<rootDir>/node_modules/',
   ],
+  testPathIgnorePatterns: ['/playground'],
   moduleNameMapper: {
     "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/styleMock.js",
     '\\.(css|scss)$': '<rootDir>/styleMock.js',
@@ -21,7 +22,7 @@ module.exports = {
     '<rootDir>/setupTests.js',
   ],
   verbose: true,
-  coverageDirectory: '<rootDir>/reports',
+  coverageDirectory: '<rootDir>/coverage',
   coverageReporters: [
     "json",
     "lcov",

@@ -5,11 +5,11 @@ type WaitForAuthenticationProviderProps<T> = {
   children: React.ReactElement
 };
 
-export const WaitForAuthenticationContext = React.createContext({});
+export const WaitForAuthenticationContext = React.createContext<{ data?: any }>({});
 
 export function WaitForAuthenticationProvider<T>({ children, data }: WaitForAuthenticationProviderProps<T>) {
   return (
-    <WaitForAuthenticationContext.Provider value={data || {}}>
+    <WaitForAuthenticationContext.Provider value={{ data }}>
       {children}
     </WaitForAuthenticationContext.Provider>
   );

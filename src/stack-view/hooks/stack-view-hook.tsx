@@ -6,7 +6,7 @@ export function useStackView() {
   if (context === undefined) {
     throw new Error('useStackView must be used within a StackViewProvider');
   }
-  const currentStack = context.getStack();
+  const currentStack = context.getStack?.();
   const stackData = currentStack ? currentStack[currentStack.length-1].data : undefined;
   return { ...context, stackData };
 }

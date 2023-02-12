@@ -8,6 +8,7 @@ describe('User Authorised Hook Test', () => {
   it('isIncludeInGroup func', () => {
     expect(isIncludeInGroup(['a', 'b'], ['a'], UserGroupVerificationMode.ANY)).toBeTruthy();
     expect(isIncludeInGroup(['a', 'b'], ['a'], UserGroupVerificationMode.ALL)).toBeFalsy();
+    expect(isIncludeInGroup(['a', 'b'], [], UserGroupVerificationMode.ALL)).toBeFalsy();
     expect(isIncludeInGroup(['a', 'b'], ['c'], UserGroupVerificationMode.ALL)).toBeFalsy();
     expect(isIncludeInGroup(['a', 'b'], ['c'], UserGroupVerificationMode.ANY)).toBeFalsy();
     expect(isIncludeInGroup(['a', 'b'], ['a', 'b', 'c'], UserGroupVerificationMode.ALL)).toBeTruthy();
