@@ -5,7 +5,7 @@ import { StackViewHelper } from '../helpers/stack-view-helper';
 import styles from '../scss/stack-view.module.scss'; // Import css modules stylesheet as styles
 
 type StackViewProps = {
-  children: React.ReactElement;
+  children: React.ReactNode;
   animated?: boolean;
 }
 

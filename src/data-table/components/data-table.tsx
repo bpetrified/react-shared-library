@@ -7,8 +7,9 @@ import { DataTableColumn, useCustomColumn } from '../hooks/custom-column-hook';
 import { useRowSelection } from '../hooks/row-selection-hook';
 import styles from '../scss/data-table.module.scss';
 import { ResizableColumnTitle } from './resizable-column-title';
+import { useState } from 'react';
 
-export type DataTableRefAttributes = Omit<UseFetchDataResult<any>, 'dataSource' | 'onChange'>
+export type DataTableRefAttributes = Omit<UseFetchDataResult<any>, 'dataSource' | 'onChange'> & { fetchDataAndReset: () => void }
 
 export type DataTableProps<T = any> = {
   columns?: ModifiedTableProps<any>
@@ -16,6 +17,10 @@ export type DataTableProps<T = any> = {
    * Fetch function to get data from BE
    */
   fetchFunction?: FetchFunction<any>
+  /** 
+   * Initial page size for fetch function to get data from BE
+   */
+  initialFetchPageSize?: number
   /** 
    * Whether rows can be selectable (checkbox)
    */
@@ -32,14 +37,21 @@ interface ModifiedTableProps<T> extends TableProps<T> {
 
 export const DataTable = forwardRef<DataTableRefAttributes, DataTableProps>((props, ref) => {
   const { columns, setColumn } = useCustomColumn(props.columns || [])
-  const fetchDataHookResult = props.fetchFunction ? useFetchData(props.fetchFunction) : {} as UseFetchDataResult<any>;
+  const fetchDataHookResult = props.fetchFunction ? useFetchData(props.fetchFunction, props.initialFetchPageSize || 100) : {} as UseFetchDataResult<any>;
   const { rowSelection } = useRowSelection(props.onRowSelectionChange);
+  
+  // For resetting the filters/sorters/page...
+  const [tableKey, setTableKey] = useState(0);
+  const fetchDataAndReset = () => {
+    fetchDataHookResult.clearSortersAndPagination();
+    setTableKey(tableKey => tableKey + 1);
+  };
   /*
   * Expose ref methods to parent, so the parent can have some control.
   */
   useImperativeHandle(ref, () => {
     const { dataSource, onChange, ...rest } = fetchDataHookResult;
-    return rest;
+    return { ...rest, fetchDataAndReset };
   });
 
   return (
@@ -66,6 +78,7 @@ export const DataTable = forwardRef<DataTableRefAttributes, DataTableProps>((pro
         ignoreSelector={"react-resizable-handle"}
       >
         <Table
+          key={tableKey}
           {...fetchDataHookResult as any}
           rowSelection={props.rowSelectionEnabled ? rowSelection : undefined}
           {...props}

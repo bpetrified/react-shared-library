@@ -16,7 +16,7 @@ export type StackViewPushParams = {
 }
 
 export function StackViewProvider({ children, injectedValue }: {
-  children: React.ReactElement,
+  children: React.ReactNode,
   injectedValue?: StackViewContextValue
 }) {
   const value: StackViewContextValue = {

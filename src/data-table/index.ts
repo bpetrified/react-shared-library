@@ -1,1 +1,1 @@
-export { DataTable } from './components/data-table';
+export { DataTable, DataTableRefAttributes } from './components/data-table';

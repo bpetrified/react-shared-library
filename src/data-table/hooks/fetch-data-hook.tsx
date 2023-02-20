@@ -19,20 +19,28 @@ export type UseFetchDataResult<T> = {
   fetchData: () => Promise<void>;
   sorters: SorterResult<any>[];
   isFetchError: boolean;
+  clearSortersAndPagination: () => void;
 }
 
-export function useFetchData<T>(fetchFunction: FetchFunction<T>): UseFetchDataResult<T> {
+export function useFetchData<T>(fetchFunction: FetchFunction<T>, initialPageSize: number): UseFetchDataResult<T> {
   const [data, setData] = useState<T[]>();
   const [loading, setLoading] = useState(false);
   const [isFetchError, setIsFetchError] = useState(false);
   const [tableParams, setTableParams] = useState<TableParams>({
     pagination: {
       current: 1,
-      pageSize: 10,
+      pageSize: initialPageSize,
     },
     filters: {},
     sorters: []
   });
+
+  const clearSortersAndPagination = () => {
+    setTableParams({...tableParams, sorters: [], pagination: {
+      current: 1,
+      pageSize: initialPageSize,
+    }})
+  }
 
   const handleTableChange = (
     pagination: TablePaginationConfig,
@@ -95,7 +103,7 @@ export function useFetchData<T>(fetchFunction: FetchFunction<T>): UseFetchDataRe
     }, sorters: tableParams.sorters
   })]);
 
-  return { dataSource: data, loading, onChange: handleTableChange, pagination: tableParams.pagination, fetchData, sorters: tableParams.sorters, isFetchError }
+  return { dataSource: data, loading, onChange: handleTableChange, pagination: tableParams.pagination, fetchData, sorters: tableParams.sorters, isFetchError, clearSortersAndPagination }
 }
 
 const isFiltersChanged = (currentFilters: any, newFilters: any) => {
