@@ -6,8 +6,10 @@ import { FetchFunction, useFetchData, UseFetchDataResult } from '../hooks/fetch-
 import { DataTableColumn, useCustomColumn } from '../hooks/custom-column-hook';
 import { useRowSelection } from '../hooks/row-selection-hook';
 import styles from '../scss/data-table.module.scss';
-import { ResizableColumnTitle } from './resizable-column-title';
+import { ResizableColumn } from './resizable-column';
 import { useState } from 'react';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 
 export type DataTableRefAttributes = Omit<UseFetchDataResult<any>, 'dataSource' | 'onChange'> & { fetchDataAndReset: () => void }
 
@@ -55,6 +57,7 @@ export const DataTable = forwardRef<DataTableRefAttributes, DataTableProps>((pro
   });
 
   return (
+    <DndProvider backend={HTML5Backend}>
     <>
       {/* Ignore here as unable to fix React type version conflict T.T */}
       {/* @ts-ignore */}
@@ -88,12 +91,14 @@ export const DataTable = forwardRef<DataTableRefAttributes, DataTableProps>((pro
           columns={columns}
           components={{
             header: {
-              cell: ResizableColumnTitle,
+              cell: ResizableColumn,
             },
           }}
         />
       </ReactDragListView.DragColumn>
+      
     </>
+    </DndProvider>
   );
 });
 

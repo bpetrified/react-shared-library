@@ -3,8 +3,7 @@ import { Button, Input, InputRef, Space } from 'antd';
 import { ColumnType } from 'antd/es/table';
 import { FilterConfirmProps } from "antd/es/table/interface";
 import React, { useEffect, useRef, useState } from "react";
-import { ResizeCallbackData } from "react-resizable";
-
+import { XYCoord } from 'react-dnd';
 export interface DataTableColumn<T> extends ColumnType<T> {
   onPageSearchEnabled?: boolean
 }
@@ -108,15 +107,14 @@ export function useCustomColumn<T>(originalColumns: ColumnType<T>[]) {
     }
   });
 
-  const handleResize =
-    (index: number) => (_: React.SyntheticEvent<Element>, { size }: ResizeCallbackData) => {
-      const newColumns = [...columns];
-      newColumns[index] = {
-        ...newColumns[index],
-        width: size.width,
-      };
-      setColumn(newColumns);
+  const handleResize = (delta: XYCoord | null, currentWidth: number, index: number) => {
+    const newColumns = [...columns];
+    newColumns[index] = {
+      ...newColumns[index],
+      width: `${currentWidth + (delta?.x || 0)}px`,
     };
+    setColumn(newColumns);
+  };
 
   /** Add enhance property for searchable column... */
   useEffect(() => {
@@ -134,8 +132,9 @@ export function useCustomColumn<T>(originalColumns: ColumnType<T>[]) {
   const mergeColumns = columns.map((col: any, index: any) => ({
     ...col,
     onHeaderCell: (column: any) => ({
+      index,
       width: column.width,
-      onResize: handleResize(index) as React.ReactEventHandler<any>
+      onResize: handleResize
     }),
   }));
 

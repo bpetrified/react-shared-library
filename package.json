@@ -1,6 +1,6 @@
 {
   "name": "techx-react-shared-library",
-  "version": "1.0.28",
+  "version": "1.0.29",
   "description": "",
   "main": "dist/cjs/index.js",
   "module": "dist/index.js",
@@ -44,7 +44,8 @@
     "@azure/msal-browser": "^2.33.0",
     "@azure/msal-react": "^1.5.3",
     "antd": "^5.1.7",
-    "react-drag-listview": "^2.0.0",
-    "react-resizable": "^3.0.4"
+    "react-dnd": "^16.0.1",
+    "react-dnd-html5-backend": "^16.0.1",
+    "react-drag-listview": "^2.0.0"
   }
 }
