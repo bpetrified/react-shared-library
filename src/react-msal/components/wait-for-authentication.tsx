@@ -1,6 +1,6 @@
 import { AccountInfo, InteractionStatus, IPublicClientApplication } from '@azure/msal-browser';
 import { useIsAuthenticated, useMsal } from '@azure/msal-react';
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { WaitForAuthenticationProvider } from "../contexts/wait-for-authentication-context";
 import { WaitForAuthenticationHelper } from "../helpers/wait-for-authentication-helper";
 import { ReactMsal } from '../react-msal';
@@ -18,12 +18,17 @@ export const WaitForAuthentication = ({ loadingComponent, children, loaderAfterA
   const [completed, setCompleted] = useState(false);
   const [error, setError] = useState(false);
   const [loaderData, setLoaderData] = useState(false);
+  const timeoutRef = useRef<any>();
 
   const isAuthenticated = useIsAuthenticated();
 
   useEffect(() => {
     if (inProgress === InteractionStatus.None) {
-      executeLoader(isAuthenticated, instance);
+      // isAuthenticated sometimes changes from false to true even after "InProgress" == none ...
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = setTimeout(() => {
+        executeLoader(isAuthenticated, instance);
+      }, 500);
     }
   }, [inProgress, isAuthenticated, instance]);
 
