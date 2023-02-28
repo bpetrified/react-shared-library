@@ -1,5 +1,5 @@
 import { Table } from 'antd';
-import { TableProps } from 'antd/es/table';
+import { TablePaginationConfig, TableProps } from 'antd/es/table';
 import React, { forwardRef, useImperativeHandle } from 'react';
 import ReactDragListView from 'react-drag-listview';
 import { FetchFunction, useFetchData, UseFetchDataResult } from '../hooks/fetch-data-hook';
@@ -48,12 +48,18 @@ export const DataTable = forwardRef<DataTableRefAttributes, DataTableProps>((pro
     fetchDataHookResult.clearSortersAndPagination();
     setTableKey(tableKey => tableKey + 1);
   };
+
+  const changePageConfig = (pageConfig: TablePaginationConfig) => {
+    fetchDataHookResult.changePageConfig(pageConfig);
+    setTableKey(tableKey => tableKey + 1);
+  };
+
   /*
   * Expose ref methods to parent, so the parent can have some control.
   */
   useImperativeHandle(ref, () => {
     const { dataSource, onChange, ...rest } = fetchDataHookResult;
-    return { ...rest, fetchDataAndReset };
+    return { ...rest, fetchDataAndReset, changePageConfig };
   });
 
   return (

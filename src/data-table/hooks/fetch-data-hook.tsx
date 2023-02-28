@@ -20,6 +20,7 @@ export type UseFetchDataResult<T> = {
   sorters: SorterResult<any>[];
   isFetchError: boolean;
   clearSortersAndPagination: () => void;
+  changePageConfig: (pageConfig: TablePaginationConfig) => void;
 }
 
 export function useFetchData<T>(fetchFunction: FetchFunction<T>, initialPageSize: number): UseFetchDataResult<T> {
@@ -71,6 +72,16 @@ export function useFetchData<T>(fetchFunction: FetchFunction<T>, initialPageSize
     }
   };
 
+  const changePageConfig = ({ current }: TablePaginationConfig) => {
+    setTableParams({
+      ...tableParams,
+      pagination: {
+        ...tableParams.pagination,
+        current
+      },
+    });
+  };
+
   const fetchData = async () => {
     if (!!!fetchFunction)
       return;
@@ -103,7 +114,7 @@ export function useFetchData<T>(fetchFunction: FetchFunction<T>, initialPageSize
     }, sorters: tableParams.sorters
   })]);
 
-  return { dataSource: data, loading, onChange: handleTableChange, pagination: tableParams.pagination, fetchData, sorters: tableParams.sorters, isFetchError, clearSortersAndPagination }
+  return { dataSource: data, loading, onChange: handleTableChange, pagination: tableParams.pagination, fetchData, sorters: tableParams.sorters, isFetchError, clearSortersAndPagination, changePageConfig }
 }
 
 const isFiltersChanged = (currentFilters: any, newFilters: any) => {
