@@ -37,10 +37,13 @@ export function useFetchData<T>(fetchFunction: FetchFunction<T>, initialPageSize
   });
 
   const clearSortersAndPagination = () => {
-    setTableParams({...tableParams, sorters: [], pagination: {
-      current: 1,
-      pageSize: initialPageSize,
-    }})
+    setTableParams({
+      ...tableParams, sorters: [], pagination: {
+        // If already at page 1, and no sorters, changing to page 1 will not trigger useEffect change...
+        current: (tableParams.pagination.current === 1 && tableParams.sorters.length === 0) ? 0 : 1,
+        pageSize: initialPageSize,
+      }
+    });
   }
 
   const handleTableChange = (
@@ -87,7 +90,10 @@ export function useFetchData<T>(fetchFunction: FetchFunction<T>, initialPageSize
       return;
     try {
       setLoading(true);
-      const fetchResult = await fetchFunction(tableParams.pagination, tableParams.sorters)
+      const fetchResult = await fetchFunction({
+        ...tableParams.pagination,
+        current: tableParams.pagination.current || 1
+      }, tableParams.sorters);
       setIsFetchError(false);
       setData(fetchResult.data);
       setLoading(false);
@@ -109,7 +115,6 @@ export function useFetchData<T>(fetchFunction: FetchFunction<T>, initialPageSize
   }, [JSON.stringify({
     pagination: {
       current: tableParams.pagination.current,
-      total: tableParams.pagination.total,
       pageSize: tableParams.pagination.pageSize
     }, sorters: tableParams.sorters
   })]);
