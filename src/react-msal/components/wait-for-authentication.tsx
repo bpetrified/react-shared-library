@@ -10,10 +10,10 @@ type WaitForAuthenticationPropType = {
   loadingComponent?: React.ReactElement;
   loaderAfterAuthentication?: (isAuthorised: boolean) => Promise<any>;
   errorComponent?: React.ReactElement;
-  onInteractionRequiredAuthError?: (e: any, _msalInstance: IPublicClientApplication) => void;
+  onError?: (e: any) => void
 }
 
-export const WaitForAuthentication = ({ loadingComponent, children, loaderAfterAuthentication, errorComponent, onInteractionRequiredAuthError }: WaitForAuthenticationPropType) => {
+export const WaitForAuthentication = ({ loadingComponent, children, loaderAfterAuthentication, errorComponent, onError }: WaitForAuthenticationPropType) => {
   const { inProgress, instance } = useMsal();
   const [completed, setCompleted] = useState(false);
   const [error, setError] = useState(false);
@@ -49,14 +49,7 @@ export const WaitForAuthentication = ({ loadingComponent, children, loaderAfterA
       const data = await loaderAfterAuthentication?.(_isAuthenticated);
       setLoaderData(data);
     } catch (e) {
-      if ((e as any).name == 'InteractionRequiredAuthError') {
-        // Allow custom handling of "InteractionRequiredAuthError"
-        (!!onInteractionRequiredAuthError ? () => {
-          onInteractionRequiredAuthError(e, _msalInstance);
-        } : () => {
-          _msalInstance.loginRedirect(ReactMsal.loginRequest);
-        })();
-      }
+      onError?.(e);
       setError(true);
       return;
     }
