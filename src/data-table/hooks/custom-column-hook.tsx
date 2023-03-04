@@ -47,6 +47,7 @@ export function useCustomColumn<T>(originalColumns: ColumnType<T>[]) {
         <Input
           data-testid={`search-input-${dataIndex}`}
           ref={searchInput}
+          maxLength={100}
           placeholder={`Search ${dataIndex}`}
           value={selectedKeys[0]}
           onChange={(e) => { 

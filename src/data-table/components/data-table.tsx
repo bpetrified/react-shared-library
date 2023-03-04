@@ -97,7 +97,9 @@ export const DataTable = forwardRef<DataTableRefAttributes, DataTableProps>((pro
           columns={columns}
           components={{
             header: {
-              cell: ResizableColumn,
+              cell: (_props: any) => { 
+                // Disable drag on select columns...
+                return (_props.index === undefined && props.rowSelectionEnabled) ? <th {..._props}>{_props.children}</th> : <ResizableColumn {..._props}/>; },
             },
           }}
         />
