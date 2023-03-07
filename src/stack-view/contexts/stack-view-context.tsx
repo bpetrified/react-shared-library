@@ -1,13 +1,18 @@
 import React from 'react';
 import { StackItem, StackViewHelper } from '../helpers/stack-view-helper';
 
-export const StackViewContext = React.createContext<StackViewContextValue>({});
+export const StackViewContext = React.createContext<StackViewContextValue>({
+  push: () => {},
+  pop: () => {},
+  popToIndex: () => {},
+  getStack: () => ([])
+});
 
 type StackViewContextValue = { 
-  push?: (params: StackViewPushParams) => void;
-  pop?: () => void;
-  popToIndex?: (index: number) => void;
-  getStack?: () => StackItem[];  
+  push: (params: StackViewPushParams) => void;
+  pop: () => void;
+  popToIndex: (index: number) => void;
+  getStack: () => StackItem[];  
 };
 
 export type StackViewPushParams = { 

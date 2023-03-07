@@ -99,7 +99,7 @@ export const DataTable = forwardRef<DataTableRefAttributes, DataTableProps>((pro
             header: {
               cell: (_props: any) => { 
                 // Disable drag on select columns...
-                return (_props.index === undefined && props.rowSelectionEnabled) ? <th {..._props}>{_props.children}</th> : <ResizableColumn {..._props}/>; },
+                return (_props.index === undefined && props.rowSelectionEnabled) ? <th {..._props} data-testid={`id-col-header-${_props.index}`}>{_props.children}</th> : <ResizableColumn {..._props}/>; },
             },
           }}
         />
