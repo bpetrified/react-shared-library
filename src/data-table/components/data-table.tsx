@@ -30,7 +30,7 @@ export type DataTableProps<T = any> = {
   /** 
    * Callback when row selection changes
    */
-  onRowSelectionChange?: (selectedKeys: React.Key[]) => void;
+  onRowSelectionChange?: (selectedKeys: React.Key[], seletedRows: T[]) => void;
 } & TableProps<T>;
 
 interface ModifiedTableProps<T> extends TableProps<T> {
@@ -89,8 +89,8 @@ export const DataTable = forwardRef<DataTableRefAttributes, DataTableProps>((pro
         <Table
           key={tableKey}
           {...fetchDataHookResult as any}
-          rowSelection={props.rowSelectionEnabled ? rowSelection : undefined}
           {...props}
+          rowSelection={props.rowSelectionEnabled ? rowSelection : undefined}
           className={`${styles.dataTable} ${props.className}`}
           // Pagination config from props
           pagination={props.pagination != false ? { ...fetchDataHookResult.pagination, ...props.pagination } : props.pagination}

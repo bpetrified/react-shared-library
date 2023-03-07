@@ -11,7 +11,7 @@ describe('Row Selecion Hook Test', () => {
       });
     
       useEffect(() => {
-        rowSelection.onChange(['a','b']);
+        rowSelection.onChange(['a','b'], [{}, {}]);
       }, []);
     
       return <>
@@ -30,7 +30,7 @@ describe('Row Selecion Hook Test', () => {
       const { rowSelection } = useRowSelection();
     
       useEffect(() => {
-        rowSelection.onChange(['a','b']);
+        rowSelection.onChange(['a','b'], [{}, {}]);
       }, []);
     
       return <>

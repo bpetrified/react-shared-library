@@ -1,46 +1,59 @@
-import React from 'react';
-import { StackItem, StackViewHelper } from '../helpers/stack-view-helper';
+import React, { useRef } from 'react';
+import { StackViewHelper } from '../helpers/stack-view-helper';
 
-export const StackViewContext = React.createContext<StackViewContextValue>({
-  push: () => {},
-  pop: () => {},
-  popToIndex: () => {},
-  getStack: () => ([])
+export const StackViewContext = React.createContext<StackViewContextValue & { id: string }>({
+  push: () => { },
+  pop: () => { },
+  popToIndex: () => { },
+  id: ''
 });
 
-type StackViewContextValue = { 
+type StackViewContextValue = {
   push: (params: StackViewPushParams) => void;
   pop: () => void;
   popToIndex: (index: number) => void;
-  getStack: () => StackItem[];  
 };
 
-export type StackViewPushParams = { 
-  view: React.ReactElement; 
+export type StackViewPushParams = {
+  view: React.ReactElement;
   data?: any;
 }
 
 export function StackViewProvider({ children, injectedValue }: {
   children: React.ReactNode,
-  injectedValue?: StackViewContextValue
+  injectedValue?: StackViewContextValue & { id: string }
 }) {
+  const idRef = useRef<string>(makeId(5));
+  // Init Stack for this provider...
+  StackViewHelper.stacks[idRef.current] = { push: () => ({}), pop: () => ({}), popToIndex: () => ({})};
+
   const value: StackViewContextValue = {
     push: (params: StackViewPushParams) => {
-      StackViewHelper.push(params);
+      StackViewHelper.stacks[idRef.current].push?.(params);
     },
     pop: () => {
-      StackViewHelper.pop();
+      StackViewHelper.stacks[idRef.current].pop?.();
     },
     popToIndex: (index: number) => {
-      StackViewHelper.popToIndex(index);
-    },  
-    getStack: () => StackViewHelper.stack
+      StackViewHelper.stacks[idRef.current].popToIndex?.(index);
+    }
   };
 
   return (
-    <StackViewContext.Provider value={injectedValue ? injectedValue : value}>
+    <StackViewContext.Provider value={injectedValue ? injectedValue : {...value, id: idRef.current}}>
       {children}
     </StackViewContext.Provider>
   );
 }
 
+function makeId(length: number) {
+  let result = '';
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  const charactersLength = characters.length;
+  let counter = 0;
+  while (counter < length) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    counter += 1;
+  }
+  return result;
+}
