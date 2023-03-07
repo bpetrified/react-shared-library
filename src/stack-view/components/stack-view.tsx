@@ -45,11 +45,11 @@ export const StackView: React.FC<StackViewProps> = (props) => {
       setActiveKey(newActiveKey);
     };
 
-    StackViewHelper.stacks[context.id].push = add;
-    StackViewHelper.stacks[context.id].pop = () => {
+    (context.getInstance() || {}).push = add;
+    (context.getInstance() || {}).pop = () => {
       remove(activeKey);
     };
-    StackViewHelper.stacks[context.id].popToIndex = removeUntilIndex;
+    (context.getInstance() || {}).popToIndex = removeUntilIndex;
   }, [activeKey, items]);
 
   return (
