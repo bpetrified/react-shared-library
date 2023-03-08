@@ -34,6 +34,7 @@ export const StackView: React.FC<StackViewProps> = (props) => {
         throw Error(`index ${index} is out of the stack bound`);
       }
       const newItems = [...items];
+      newItems.splice(index + 1);
       setItems(newItems);
       setActiveKey(newItems[newItems.length-1].key);
     }
