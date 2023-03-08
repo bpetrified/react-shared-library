@@ -1,6 +1,5 @@
 .dataTable {
-  :global
-  .react-resizable-handle {
+  :global .react-resizable-handle {
     position: absolute;
     right: -5px;
     bottom: 0;
@@ -10,8 +9,7 @@
     cursor: col-resize;
   }
 
-  :global
-  .layout-checker {
+  :global .layout-checker {
     position: absolute;
     left: 0;
     right: 0;
@@ -21,24 +19,23 @@
     z-index: -99;
   }
 
-  :global
-  .ant-table-column-sorter {
+  :global .ant-table-column-sorter {
     margin-right: 10px
   }
 
-  :global
-  .ant-table-filter-column {
+  :global .ant-table-filter-column {
     .ant-table-column-sorter {
       margin-right: 0px
     }
   }
 
-  :global
-  .ant-table-filter-trigger {
+  :global .ant-table-filter-trigger {
     margin-right: 5px
   }
-}
-:global
-.dragHandler {
-  display: block;
+
+  :global .dragHandler {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 }

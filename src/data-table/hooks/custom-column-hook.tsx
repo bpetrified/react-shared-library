@@ -96,7 +96,7 @@ export function useCustomColumn<T>(originalColumns: ColumnType<T>[]) {
       <SearchOutlined data-testid={`filter-icon-${dataIndex}`} style={{ color: filtered ? '#1890ff' : undefined }} />
     ),
     onFilter: (value, record: any) => {
-      return record[dataIndex]
+      return (record[dataIndex] || '')
       .toString()
       .toLowerCase()
       .includes((value as string).toLowerCase())
