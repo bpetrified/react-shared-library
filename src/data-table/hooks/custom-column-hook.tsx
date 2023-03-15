@@ -41,14 +41,14 @@ export function useCustomColumn<T>(originalColumns: ColumnType<T>[]) {
     setSearchedColumn(dataIndex)
   };
 
-  const getColumnSearchProps = (dataIndex: string): ColumnType<T> => ({
+  const getColumnSearchProps = (dataIndex: string, colTitle: string): ColumnType<T> => ({
     filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters, close }) => (
       <div style={{ padding: 8 }} onKeyDown={(e) => e.stopPropagation()}>
         <Input
           data-testid={`search-input-${dataIndex}`}
           ref={searchInput}
           maxLength={100}
-          placeholder={`Search ${dataIndex}`}
+          placeholder={`Search ${colTitle}`}
           value={selectedKeys[0]}
           onChange={(e) => { 
             const _selectedKey = e.target.value ? [e.target.value] : [];
@@ -120,7 +120,7 @@ export function useCustomColumn<T>(originalColumns: ColumnType<T>[]) {
   /** Add enhance property for searchable column... */
   useEffect(() => {
     setColumn(columns.map((col: any) => {
-      const onPageSearchProperty = col.onPageSearchEnabled ? getColumnSearchProps((col.dataIndex || '').toString()) : {};
+      const onPageSearchProperty = col.onPageSearchEnabled ? getColumnSearchProps((col.dataIndex || '').toString(), col.title) : {};
       return {
         ellipsis: true,
         ...col,
