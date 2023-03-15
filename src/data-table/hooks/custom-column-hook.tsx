@@ -6,6 +6,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { XYCoord } from 'react-dnd';
 export interface DataTableColumn<T> extends ColumnType<T> {
   onPageSearchEnabled?: boolean
+  onPageSearchFunction?: (value: string, record: T, dataIndex: string) => boolean
 }
 
 type SearchedColumns = {
@@ -41,27 +42,27 @@ export function useCustomColumn<T>(originalColumns: ColumnType<T>[]) {
     setSearchedColumn(dataIndex)
   };
 
-  const getColumnSearchProps = (dataIndex: string, colTitle: string): ColumnType<T> => ({
+  const getColumnSearchProps = (col: any): ColumnType<T> => ({
     filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters, close }) => (
       <div style={{ padding: 8 }} onKeyDown={(e) => e.stopPropagation()}>
         <Input
-          data-testid={`search-input-${dataIndex}`}
+          data-testid={`search-input-${col.dataIndex}`}
           ref={searchInput}
           maxLength={100}
-          placeholder={`Search ${colTitle}`}
+          placeholder={`Search ${col.title}`}
           value={selectedKeys[0]}
           onChange={(e) => { 
             const _selectedKey = e.target.value ? [e.target.value] : [];
             setSelectedKeys(_selectedKey)
           }}
-          onPressEnter={() => handleSearch(selectedKeys as string[], confirm, dataIndex)}
+          onPressEnter={() => handleSearch(selectedKeys as string[], confirm, col.dataIndex)}
           style={{ marginBottom: 8, display: 'block' }}
         />
         <Space>
           <Button
-            data-testid={`search-btn-${dataIndex}`}
+            data-testid={`search-btn-${col.dataIndex}`}
             type="primary"
-            onClick={() => handleSearch(selectedKeys as string[], confirm, dataIndex)}
+            onClick={() => handleSearch(selectedKeys as string[], confirm, col.dataIndex)}
             icon={<SearchOutlined />}
             size="small"
             style={{ width: 90 }}
@@ -69,9 +70,9 @@ export function useCustomColumn<T>(originalColumns: ColumnType<T>[]) {
             Search
           </Button>
           <Button
-            data-testid={`reset-btn-${dataIndex}`}
+            data-testid={`reset-btn-${col.dataIndex}`}
             onClick={() => { 
-              handleReset(clearFilters || (() => {}), dataIndex);
+              handleReset(clearFilters || (() => {}), col.dataIndex);
               confirm();
             }}
             size="small"
@@ -80,7 +81,7 @@ export function useCustomColumn<T>(originalColumns: ColumnType<T>[]) {
             Reset
           </Button>
           <Button
-            data-testid={`close-btn-${dataIndex}`}
+            data-testid={`close-btn-${col.dataIndex}`}
             type="link"
             size="small"
             onClick={() => {
@@ -93,13 +94,13 @@ export function useCustomColumn<T>(originalColumns: ColumnType<T>[]) {
       </div>
     ),
     filterIcon: (filtered: boolean) => (
-      <SearchOutlined data-testid={`filter-icon-${dataIndex}`} style={{ color: filtered ? '#1890ff' : undefined }} />
+      <SearchOutlined data-testid={`filter-icon-${col.dataIndex}`} style={{ color: filtered ? '#1890ff' : undefined }} />
     ),
     onFilter: (value, record: any) => {
-      return (record[dataIndex] || '')
+      return col.onPageSearchFunction ? col.onPageSearchFunction(value, record, col.dataIndex) : ((record[col.dataIndex] || '')
       .toString()
       .toLowerCase()
-      .includes((value as string).toLowerCase())
+      .includes((value as string).toLowerCase()));
     },
     onFilterDropdownOpenChange: (visible) => {
       if (visible) {
@@ -120,7 +121,7 @@ export function useCustomColumn<T>(originalColumns: ColumnType<T>[]) {
   /** Add enhance property for searchable column... */
   useEffect(() => {
     setColumn(columns.map((col: any) => {
-      const onPageSearchProperty = col.onPageSearchEnabled ? getColumnSearchProps((col.dataIndex || '').toString(), col.title) : {};
+      const onPageSearchProperty = col.onPageSearchEnabled ? getColumnSearchProps(col) : {};
       return {
         ellipsis: true,
         ...col,
