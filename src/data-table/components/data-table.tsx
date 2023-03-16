@@ -31,6 +31,10 @@ export type DataTableProps<T = any> = {
    * Callback when row selection changes
    */
   onRowSelectionChange?: (selectedKeys: React.Key[], seletedRows: T[]) => void;
+  /**
+   * To reflect new columns when they are changed
+   */
+  onColumnsChange?: (newColumns: DataTableColumn<T>[]) => void;
 } & TableProps<T>;
 
 interface ModifiedTableProps<T> extends TableProps<T> {
@@ -38,7 +42,7 @@ interface ModifiedTableProps<T> extends TableProps<T> {
 }
 
 export const DataTable = forwardRef<DataTableRefAttributes, DataTableProps>((props, ref) => {
-  const { columns, setColumn } = useCustomColumn(props.columns || [])
+  const { columns, setColumn } = useCustomColumn(props.columns || [], props.onColumnsChange || (() => {}))
   const fetchDataHookResult = props.fetchFunction ? useFetchData(props.fetchFunction, props.initialFetchPageSize || 100) : {} as UseFetchDataResult<any>;
   const { rowSelection } = useRowSelection(props.onRowSelectionChange);
   

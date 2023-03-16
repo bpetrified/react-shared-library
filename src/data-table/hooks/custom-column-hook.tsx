@@ -13,7 +13,7 @@ type SearchedColumns = {
   [key: string]: string
 }
 
-export function useCustomColumn<T>(originalColumns: ColumnType<T>[]) {
+export function useCustomColumn<T>(originalColumns: ColumnType<T>[], onColumnsChange?: (newColumns: DataTableColumn<T>[]) => void) {
   const [columns, setColumn] = useState<DataTableColumn<T>[]>(originalColumns || []);
   const [searchText, setSearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
@@ -120,7 +120,7 @@ export function useCustomColumn<T>(originalColumns: ColumnType<T>[]) {
 
   /** Add enhance property for searchable column... */
   useEffect(() => {
-    setColumn(columns.map((col: any) => {
+    const newColumns = columns.map((col: any) => {
       const onPageSearchProperty = col.onPageSearchEnabled ? getColumnSearchProps(col) : {};
       return {
         ellipsis: true,
@@ -128,7 +128,8 @@ export function useCustomColumn<T>(originalColumns: ColumnType<T>[]) {
         title: <span className="dragHandler">{col.title}</span>,
         ...onPageSearchProperty
       }
-    }))
+    });
+    setColumn(newColumns);
   }, []);
 
   const mergeColumns = columns.map((col: any, index: any) => ({
@@ -139,6 +140,11 @@ export function useCustomColumn<T>(originalColumns: ColumnType<T>[]) {
       onResize: handleResize
     }),
   }));
+
+  // Reflect change to outside..
+  useEffect(() => {
+    onColumnsChange?.(columns);
+  }, [columns]);
 
   return { columns: mergeColumns, setColumn }
 }
