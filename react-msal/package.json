@@ -1,12 +1,12 @@
 {
-  "name": "techx-react-shared-library",
-  "version": "1.0.46",
+  "name": "@bpetrified/react-msal",
+  "version": "1.0.0",
   "description": "",
   "main": "dist/cjs/index.js",
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "test": "jest",
+    "test": "echo \"Error: no test specified\" && exit 1",
     "build": "rm -rf dist && rollup -c --bundleConfigAsCjs",
     "pub": "npm publish --access public"
   },
@@ -21,12 +21,8 @@
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^14.4.3",
-    "@types/jest": "^29.4.0",
     "@types/react": "^18.0.27",
-    "@types/react-resizable": "^3.0.3",
     "fs": "^0.0.1-security",
-    "jest": "^29.4.1",
-    "jest-environment-jsdom": "^29.4.1",
     "path": "^0.12.7",
     "react": "^18.2.0",
     "rollup": "^3.14.0",
@@ -42,10 +38,6 @@
   },
   "dependencies": {
     "@azure/msal-browser": "^2.33.0",
-    "@azure/msal-react": "^1.5.3",
-    "antd": "^5.1.7",
-    "react-dnd": "^16.0.1",
-    "react-dnd-html5-backend": "^16.0.1",
-    "react-drag-listview": "^2.0.0"
+    "@azure/msal-react": "^1.5.3"
   }
 }
