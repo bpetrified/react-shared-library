@@ -3,7 +3,7 @@ A component that uses Ant Design "Table" with features:
   - Handling fetch data from BE
 
 ```
-import { DataTable } from 'techx-react-shared-library';
+import { DataTable } from '@bpetrified/data-table';
 ```
 
 ### Simple data table that can drag and drop column

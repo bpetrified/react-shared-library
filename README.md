@@ -2,10 +2,9 @@ This project is published to public NPM to allow installation from public npm re
 
 ##### Installation
 ```
-npm install techx-react-shared-library@latest
 ```
 
 ##### What are in this library ?
-  - [React MSAL Module](src/react-msal/react-msal.md)
-  - [Data Table Component](src/data-table/data-table.md)
+  - [React MSAL Module](react-msal/react-msal.md)
+  - [Data Table Component](data-table/data-table.md)
 
