@@ -11,7 +11,7 @@ import { useState } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
-export type DataTableRefAttributes = Omit<UseFetchDataResult<any>, 'dataSource' | 'onChange'> & { fetchDataAndReset: () => void }
+export type DataTableRefAttributes = Omit<UseFetchDataResult<any>, 'dataSource' | 'onChange'> & { fetchDataAndReset: () => void, setSelectedRowKeys: React.Dispatch<React.SetStateAction<React.Key[]>> }
 
 export type DataTableProps<T = any> = {
   columns?: ModifiedTableProps<any>
@@ -63,7 +63,7 @@ export const DataTable = forwardRef<DataTableRefAttributes, DataTableProps>((pro
   */
   useImperativeHandle(ref, () => {
     const { dataSource, onChange, ...rest } = fetchDataHookResult;
-    return { ...rest, fetchDataAndReset, changePageConfig };
+    return { ...rest, fetchDataAndReset, changePageConfig, setSelectedRowKeys: rowSelection.setSelectedRowKeys };
   });
 
   return (

@@ -10,6 +10,7 @@ export function useRowSelection(onRowSelectionChange?: (newSelectedRowKeys: Reac
 
   const rowSelection = {
     selectedRowKeys,
+    setSelectedRowKeys,
     onChange: onSelectChange,
   };
   
