@@ -1,6 +1,6 @@
 {
   "name": "@bpetrified/data-table",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "main": "dist/cjs/index.js",
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -44,5 +44,9 @@
     "react-dnd-html5-backend": "^16.0.1",
     "react-drag-listview": "^2.0.0"
   },
-  "description": ""
+  "description": "",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bpetrified/react-shared-library.git"
+  }
 }

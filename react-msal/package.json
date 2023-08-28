@@ -1,6 +1,6 @@
 {
   "name": "@bpetrified/react-msal",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "",
   "main": "dist/cjs/index.js",
   "module": "dist/index.js",
@@ -39,5 +39,9 @@
   "dependencies": {
     "@azure/msal-browser": "^2.33.0",
     "@azure/msal-react": "^1.5.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bpetrified/react-shared-library.git"
   }
 }
